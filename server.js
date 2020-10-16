@@ -5,8 +5,35 @@ require('./lib/feature-flags')
 const express = require('express')
 const portUsed = require('port-used')
 const warmServer = require('./lib/warm-server')
+const babel = require('@babel/core')
+const fs = require('fs')
+const path = require('path')
+const dirTree = require('directory-tree')
 const port = Number(process.env.PORT) || 4000
 const app = express()
+
+// Build React Components
+const transform = code =>
+  babel.transform(code, {
+    presets: ['@babel/preset-env'],
+    plugins: [
+      '@babel/plugin-transform-react-jsx',
+      '@babel/plugin-proposal-object-rest-spread'
+    ]
+  }).code
+
+const tree = dirTree('./react/')
+for (const index in tree.children) {
+  const file = tree.children[index]
+  if (file.type === 'file') {
+    if (!fs.existsSync(path.join('dist', 'react'))) {
+      fs.mkdirSync(path.join('dist', 'react'), { recursive: true })
+    }
+    const content = transform(fs.readFileSync(file.path, 'utf8'))
+    fs.writeFileSync(path.join('dist', file.path), content)
+  }
+}
+// End Build React Components
 
 require('./middleware')(app)
 
