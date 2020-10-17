@@ -1,4 +1,5 @@
 const React = require('react')
+const ReactDOM = require('react-dom')
 const { useState, useEffect } = require('react')
 
 const Timer = () => {
@@ -43,4 +44,14 @@ const Timer = () => {
   );
 };
 
-module.exports = Timer;
+if (typeof window === 'undefined') {
+} else {
+  const componentContainers = document.querySelectorAll('.react-component-timer')
+
+  for (const index of componentContainers) {
+    const componentContainer = componentContainers[index]
+    ReactDOM.hydrate(React.createElement(Timer), componentContainer)
+  }
+}
+
+module.exports = Timer
