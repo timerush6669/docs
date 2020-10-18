@@ -22,7 +22,7 @@ You can extend the CI and CD capabilities of your repository by publishing or in
 
 {% data reusables.package_registry.container-registry-beta %}
 
-{% data reusables.package_registry.authenticate_with_pat_for_container_registry %}
+{% database reusables.package_registry.authenticate_with_pat_for_container_registry %}
 
 For an authentication example, see "[Authenticating with the {% data variables.product.prodname_container_registry %}](/packages/getting-started-with-github-container-registry/migrating-to-github-container-registry-for-docker-images#authenticating-with-the-container-registry)."
 
